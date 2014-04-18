@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<twitterAPI>
+	<accesslevel>read-only</accesslevel>
+	<apikey>72wK0dTFpTq7SsFFfftudAsuD</apikey>
+	<callback-url>none</callback-url>			
+	<tsign-in>no</tsign-in>
+	<app-only-authentication>https://api.twitter.com/oauth2/token</app-only-authentication>
+	<request-token-url>https://api.twitter.com/oauth/request_token</request-token-url>
+	<authorize-url>https://api.twitter.com/oauth/authorize</authorize-url>			
+	<access-token-url>https://api.twitter.com/oauth/access_token</access-token-url>	
+</twitterAPI>
