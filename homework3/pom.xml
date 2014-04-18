@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.sapienza.informatica.websocial</groupId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<name>homework3</name>
 	<description>Twitter research homework</description>
 	<artifactId>homework3</artifactId>
