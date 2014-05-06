@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import twitter4j.TwitterStream;
+import utils.Authenticate;
 import listener.PoliticianTweets;
 
 public class EuropeanElections {
@@ -45,8 +47,8 @@ public class EuropeanElections {
 	private List<String> kwList = null;
 
 	/**
-	 * Access twitter via internet and downloads every tweet that contains at
-	 * least one of the keyword in the keywordfile
+	 * Access twitter via internet and downloads any tweet that contains at
+	 * least one of the keyword in the keywords file
 	 * 
 	 * @param kwFile
 	 *            one keyword per line file
@@ -85,15 +87,25 @@ public class EuropeanElections {
 	public static void main(String[] args) {
 		EuropeanElections instance = null;
 		File kwFile = null, outFile = null;
-
+		TwitterStream twitterStream = null;
+		PoliticianTweets pTweet = null;
+		//MULTITHREADING
+		Thread prodThread=null, consThread=null;
 		try {
+			// AVVIO STREAMING TWITTER
 			kwFile = args.length > 0 ? new File(args[0]) : DEF_KWFILE;
 			outFile = args.length > 1 ? new File(args[1]) : DEF_OUTFILE;
 			instance = EElectionFactory(kwFile, outFile);
-			// PoliticianTweets.startListener(); // START LISTENER
+			twitterStream = Authenticate.getAuthenticationStreaming();
+			// START LISTENER
+			pTweet = new PoliticianTweets(twitterStream, instance.kwList);
+			prodThread = new Thread(pTweet);
+			prodThread.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(EXST_ERR_GEN);
+		} finally{
+			prodThread = null;
 		}
 	}
 
@@ -109,7 +121,7 @@ public class EuropeanElections {
 			reader = new BufferedReader(new FileReader(file));
 			String line = null;
 			while ((line = reader.readLine()) != null) {
-				if (checkKeyword(line)) {
+				if (checkKeyWord(line)) {
 					result.add(line);
 				} else {
 					System.err.println(line + " malformed keyword. Skipped.");
@@ -132,8 +144,8 @@ public class EuropeanElections {
 		return INSTANCE;
 	}
 
-	private static boolean checkKeyword(String kw) {
-		return kw.trim().matches("[a-z]");
+	private static boolean checkKeyWord(String kw) {
+		return kw.trim().matches("[a-z]+");
 	}
 
 }
