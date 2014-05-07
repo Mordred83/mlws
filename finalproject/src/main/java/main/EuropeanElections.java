@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import twitter4j.TwitterStream;
 import utils.Authenticate;
@@ -45,6 +47,9 @@ public class EuropeanElections {
 	 * Keyword List
 	 */
 	private List<String> kwList = null;
+	
+	/* MULTITHREADING */
+	private BlockingQueue<String> sharedQueue = new LinkedBlockingQueue<String>();
 
 	/**
 	 * Access twitter via internet and downloads any tweet that contains at
@@ -98,13 +103,13 @@ public class EuropeanElections {
 			instance = EElectionFactory(kwFile, outFile);
 			twitterStream = Authenticate.getAuthenticationStreaming();
 			// START LISTENER
-			pTweet = new PoliticianTweets(twitterStream, instance.kwList);
+			pTweet = new PoliticianTweets(twitterStream, instance.kwList, instance.sharedQueue);
 			prodThread = new Thread(pTweet);
 			prodThread.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(EXST_ERR_GEN);
-		} finally{
+		} finally {
 			prodThread = null;
 		}
 	}
