@@ -19,7 +19,7 @@ import twitter4j.StatusListener;
 import twitter4j.TwitterObjectFactory;
 import twitter4j.TwitterStream;
 
-public class PoliticianTweets implements Runnable {
+public class PoliticalTweets implements Runnable {
 
 	private static final int			CONS_TIMEOUT	= 10;				//SECONDS
 	private static final TimeUnit		CONS_TIMEUNIT	= TimeUnit.SECONDS;
@@ -27,7 +27,7 @@ public class PoliticianTweets implements Runnable {
 	private final TwitterStream			tStream;
 	private final FilterQuery			query;
 	private final String[]				kwArray;
-	private final BlockingQueue<Status>	sharedQueue;
+	private final BlockingQueue<String>	sharedQueue;
 	private final File					outFile;
 	//private final Map<String, Integer>	keyWTweetMap;
 	private final StatusListener		listener		= new StatusListener() {
@@ -38,7 +38,8 @@ public class PoliticianTweets implements Runnable {
 															public void onStatus(Status status) {
 																System.out.println("New tweet with id: "
 																		+ status.getId());
-																sharedQueue.add(status);
+																String rawJSON = TwitterObjectFactory.getRawJSON(status); 
+																sharedQueue.add(rawJSON);
 																System.out.println("Tweet: "
 																		+ status.getId()
 																		+ " added to Queue");
@@ -70,13 +71,13 @@ public class PoliticianTweets implements Runnable {
 
 														};
 
-	public PoliticianTweets(TwitterStream tStream,
+	public PoliticalTweets(TwitterStream tStream,
 							List<String> kwList,
 							File outFile) {
 		this.tStream = tStream;
 		this.kwArray = kwList.toArray(new String[0]);
 		this.outFile = outFile;
-		this.sharedQueue = new LinkedBlockingQueue<Status>();
+		this.sharedQueue = new LinkedBlockingQueue<String>();
 //		this.keyWTweetMap = instantiateKeyWTweetNMap(kwList);
 		this.run = true;
 		query = new FilterQuery();
@@ -94,15 +95,17 @@ public class PoliticianTweets implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("Starting listener..");
+		if(tStream == null) System.out.println("mi hai");
+		if(listener  == null) System.out.println("sbomballato");
 		tStream.addListener(listener);
 		tStream.filter(query);
 		while (true) {
-			Status tweet = null;
+			String statusJSON = null;
 			try {
-				tweet = sharedQueue.poll(CONS_TIMEOUT, CONS_TIMEUNIT);
-				if (tweet != null) {
+				statusJSON = sharedQueue.poll(CONS_TIMEOUT, CONS_TIMEUNIT);
+				if (statusJSON != null) {
 					System.out.println("Saving tweet");
-					saveTweet(TwitterObjectFactory.getRawJSON(tweet), outFile);
+					saveTweet(statusJSON, outFile);
 					//					String text = tweet.getText();
 					//					for(String key : keyWTweetMap.keySet()){
 					//						if(text.toLowerCase().contains(key.toLowerCase())){

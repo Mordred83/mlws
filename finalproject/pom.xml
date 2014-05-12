@@ -6,6 +6,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Final Project</name>
 	<description>It's the final countdown</description>
+	
+	<properties>
+		<jdk.version>1.7</jdk.version>
+	</properties>
 
 	<dependencies>
 		<dependency>

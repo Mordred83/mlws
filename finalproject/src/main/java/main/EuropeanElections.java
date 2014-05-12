@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import listener.PoliticianTweets;
+import listener.PoliticalTweets;
 import twitter4j.TwitterStream;
 import utils.Authenticate;
 
@@ -93,7 +93,7 @@ public class EuropeanElections {
 		EuropeanElections instance = null;
 		File kwFile = null, outFile = null;
 		TwitterStream twitterStream = null;
-		PoliticianTweets pTweet = null;
+		PoliticalTweets pTweet = null;
 		//MULTITHREADING
 		Thread prodThread=null;
 		try {
@@ -103,7 +103,7 @@ public class EuropeanElections {
 			instance = EElectionFactory(kwFile, outFile);
 			twitterStream = Authenticate.getAuthenticationStreaming();
 			// START LISTENER
-			pTweet = new PoliticianTweets(twitterStream, instance.kwList, outFile);
+			pTweet = new PoliticalTweets(twitterStream, instance.kwList, outFile);
 			//MULTITHREADING
 			prodThread = new Thread(pTweet);
 			prodThread.start();
@@ -155,7 +155,8 @@ public class EuropeanElections {
 	}
 
 	private static boolean checkKeyWord(String kw) {
-		return kw.trim().matches("[a-zA-Z ]+");
+		return true;
+		//return kw.trim().matches("[a-zA-Z ]+");
 	}
 
 }
