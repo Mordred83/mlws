@@ -10,15 +10,15 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import listener.PoliticianTweets;
 import twitter4j.TwitterStream;
 import utils.Authenticate;
-import listener.PoliticianTweets;
 
 public class EuropeanElections {
 	/**
 	 * Default resources directory
 	 */
-	public static final File DEF_RES_DIR = new File("src/test/resources");
+	public static final File DEF_RES_DIR = new File("src/main/resources");
 	/**
 	 * Default keyword file
 	 */
@@ -95,7 +95,7 @@ public class EuropeanElections {
 		TwitterStream twitterStream = null;
 		PoliticianTweets pTweet = null;
 		//MULTITHREADING
-		Thread prodThread=null, consThread=null;
+		Thread prodThread=null;
 		try {
 			// AVVIO STREAMING TWITTER
 			kwFile = args.length > 0 ? new File(args[0]) : DEF_KWFILE;
@@ -103,14 +103,19 @@ public class EuropeanElections {
 			instance = EElectionFactory(kwFile, outFile);
 			twitterStream = Authenticate.getAuthenticationStreaming();
 			// START LISTENER
-			pTweet = new PoliticianTweets(twitterStream, instance.kwList, instance.sharedQueue);
+			pTweet = new PoliticianTweets(twitterStream, instance.kwList, outFile);
+			//MULTITHREADING
 			prodThread = new Thread(pTweet);
 			prodThread.start();
+			while(prodThread.isAlive()){
+				Thread.sleep(5*1000);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(EXST_ERR_GEN);
 		} finally {
-			prodThread = null;
+			System.out.println("finally block called");
+			//tSaver.terminate();
 		}
 	}
 
@@ -150,7 +155,7 @@ public class EuropeanElections {
 	}
 
 	private static boolean checkKeyWord(String kw) {
-		return kw.trim().matches("[a-z]+");
+		return kw.trim().matches("[a-zA-Z ]+");
 	}
 
 }
