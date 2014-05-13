@@ -15,7 +15,7 @@
 	<!-- TRIGGERS -->
 	<bean id="changeOutputFileTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="changeOutputFileJob" />
-		<property name="cronExpression" value="0 50 21 1/1 * ? *" /> 
+		<property name="cronExpression" value="0 0 0 1/1 * ? *" /> 
 		<!-- <property name="cronExpression" value="0 0 3 1/1 * ? *" /> -->
 	</bean>
 	
