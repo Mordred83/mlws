@@ -111,7 +111,7 @@ public class PoliticalTweets implements Runnable {
 		}
 	}
 	
-	private boolean changeOutFile(File newOutFile){
+	public synchronized void changeOutFile(File newOutFile){
 		System.out.println("Changinh output file to: "+newOutFile.getAbsolutePath());
 		if(newOutFile.exists() && newOutFile.canWrite()){
 			this.outFile = newOutFile;
@@ -119,7 +119,6 @@ public class PoliticalTweets implements Runnable {
 			String msg = newOutFile.getAbsolutePath()+(!newOutFile.exists() ? ": doesn't exists":" not enough permissions");
 			throw new IllegalArgumentException(msg);
 		}
-		return true;
 	}
 
 	private static void saveTweet(String tweet, File outFile) {

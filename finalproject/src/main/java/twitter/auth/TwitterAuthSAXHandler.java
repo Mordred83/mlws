@@ -34,8 +34,7 @@ public class TwitterAuthSAXHandler extends DefaultHandler {
 	
 	@Override
 	public void endDocument() throws SAXException {
-		credentials = null;
-		this.notify();
+		
 	}
 
 	@Override

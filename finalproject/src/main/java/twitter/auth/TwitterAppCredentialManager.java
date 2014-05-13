@@ -17,7 +17,6 @@ public class TwitterAppCredentialManager {
 				parser = SAXParserFactory.newInstance().newSAXParser();
 				TwitterAuthSAXHandler handler = new TwitterAuthSAXHandler();
 				parser.parse(file, handler);
-				handler.wait();
 				credentials = handler.getCredentials();
 			} else {
 				String msg = file.getAbsolutePath()
