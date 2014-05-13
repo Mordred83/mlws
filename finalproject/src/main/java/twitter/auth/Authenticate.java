@@ -1,7 +1,6 @@
 package twitter.auth;
 
 import java.io.File;
-import java.util.List;
 
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
@@ -9,11 +8,13 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class Authenticate {
 
-	public static TwitterStream getAuthenticationStreaming(File credentialsXMLFile) {
+	public TwitterStream getAuthenticationStreaming(File credentialsID) {
 		TwitterAppCredentials credentials = null;
 		TwitterStream twitterStream = null;
 
 		try {
+			ClassLoader cl = getClass().getClassLoader();
+			File credentialsXMLFile = new File(cl.getResource("resources/conf/fauthenticate.xml").getFile());
 			credentials = TwitterAppCredentialManager.getCredentials(credentialsXMLFile).get(0);
 			ConfigurationBuilder builderStream = new ConfigurationBuilder();
 			builderStream.setDebugEnabled(true);

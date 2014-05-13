@@ -104,7 +104,7 @@ public class EuropeanElections {
 			kwFile = args.length > 0 ? new File(args[0]) : DEF_KWFILE;
 			outFile = args.length > 1 ? new File(args[1]) : DEF_OUTFILE;
 			instance = EElectionFactory(kwFile, outFile);
-			twitterStream = Authenticate.getAuthenticationStreaming(DEF_CREDFILE);
+			twitterStream = new Authenticate().getAuthenticationStreaming(DEF_CREDFILE);
 			// START LISTENER
 			pTweet = new PoliticalTweets(twitterStream, instance.kwList, outFile);
 			//MULTITHREADING

@@ -21,7 +21,7 @@ public class TwitterAppCredentialManager {
 				credentials = handler.getCredentials();
 			} else {
 				String msg = file.getAbsolutePath()
-						+ (file.exists() ? " doesn't exists" : " not enough permission");
+						+ (!file.exists() ? " doesn't exists" : " not enough permission");
 				throw new IllegalArgumentException(msg);
 			}
 		} catch (Exception e) {

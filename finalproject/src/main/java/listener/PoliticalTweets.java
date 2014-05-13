@@ -26,7 +26,7 @@ public class PoliticalTweets implements Runnable {
 	private final FilterQuery			query;
 	private final String[]				kwArray;
 	private final BlockingQueue<String>	sharedQueue;
-	private final File					outFile;
+	private File					outFile;
 	//private final Map<String, Integer>	keyWTweetMap;
 	private final StatusListener		listener		= new StatusListener() {
 
@@ -102,7 +102,6 @@ public class PoliticalTweets implements Runnable {
 				if (!run) break;
 			}
 		}
-
 	}
 
 	public void terminated() {
@@ -110,6 +109,17 @@ public class PoliticalTweets implements Runnable {
 		synchronized (run) {
 			run = false;
 		}
+	}
+	
+	private boolean changeOutFile(File newOutFile){
+		System.out.println("Changinh output file to: "+newOutFile.getAbsolutePath());
+		if(newOutFile.exists() && newOutFile.canWrite()){
+			this.outFile = newOutFile;
+		}else{
+			String msg = newOutFile.getAbsolutePath()+(!newOutFile.exists() ? ": doesn't exists":" not enough permissions");
+			throw new IllegalArgumentException(msg);
+		}
+		return true;
 	}
 
 	private static void saveTweet(String tweet, File outFile) {
