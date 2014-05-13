@@ -7,18 +7,20 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import listener.PoliticalTweets;
+import twitter.auth.Authenticate;
 import twitter4j.TwitterStream;
-import utils.Authenticate;
 
 public class EuropeanElections {
 	/**
 	 * Default resources directory
 	 */
 	public static final File DEF_RES_DIR = new File("src/main/resources");
+	/**
+	 * Default configuration files directory
+	 */
+	public static final File DEF_CONF_DIR = new File(DEF_RES_DIR, "conf");
 	/**
 	 * Default keyword file
 	 */
@@ -27,6 +29,10 @@ public class EuropeanElections {
 	 * Default output file
 	 */
 	public static final File DEF_OUTFILE = new File(DEF_RES_DIR, "output.txt");
+	/**
+	 * Default credentials XML file
+	 */
+	public static final File DEF_CREDFILE = new File(DEF_CONF_DIR, "fauthenticate.xml");
 	/**
 	 * Generic error EXIT status {@value #EXST_ERR_GEN}
 	 */
@@ -38,18 +44,15 @@ public class EuropeanElections {
 	/**
 	 * Runtime keyword file
 	 */
-	private File kwFile = null;
+	//private File kwFile = null;
 	/**
 	 * Runtime output file
 	 */
-	private File outFile = null;
+	//private File outFile = null;
 	/**
 	 * Keyword List
 	 */
 	private List<String> kwList = null;
-	
-	/* MULTITHREADING */
-	private BlockingQueue<String> sharedQueue = new LinkedBlockingQueue<String>();
 
 	/**
 	 * Access twitter via internet and downloads any tweet that contains at
@@ -65,8 +68,8 @@ public class EuropeanElections {
 	 */
 	private EuropeanElections(final File kwFile, final File outFile)
 			throws IOException {
-		this.kwFile = kwFile;
-		this.outFile = outFile;
+		//this.kwFile = kwFile;
+		//this.outFile = outFile;
 		// Validating arguments
 		if (!kwFile.exists())
 			throw new IllegalArgumentException(kwFile.getAbsolutePath()
@@ -101,7 +104,7 @@ public class EuropeanElections {
 			kwFile = args.length > 0 ? new File(args[0]) : DEF_KWFILE;
 			outFile = args.length > 1 ? new File(args[1]) : DEF_OUTFILE;
 			instance = EElectionFactory(kwFile, outFile);
-			twitterStream = Authenticate.getAuthenticationStreaming();
+			twitterStream = Authenticate.getAuthenticationStreaming(DEF_CREDFILE);
 			// START LISTENER
 			pTweet = new PoliticalTweets(twitterStream, instance.kwList, outFile);
 			//MULTITHREADING

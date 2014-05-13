@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -84,19 +82,9 @@ public class PoliticalTweets implements Runnable {
 		query.track(kwArray);
 	}
 
-	private static Map<String, Integer> instantiateKeyWTweetNMap(List<String> keywords) {
-		Map<String,Integer> result = new HashMap<String, Integer>();
-		for(String keyword : keywords){
-			result.put(keyword, 0);
-		}
-		return result;
-	}
-
 	@Override
 	public void run() {
 		System.out.println("Starting listener..");
-		if(tStream == null) System.out.println("mi hai");
-		if(listener  == null) System.out.println("sbomballato");
 		tStream.addListener(listener);
 		tStream.filter(query);
 		while (true) {
@@ -106,13 +94,6 @@ public class PoliticalTweets implements Runnable {
 				if (statusJSON != null) {
 					System.out.println("Saving tweet");
 					saveTweet(statusJSON, outFile);
-					//					String text = tweet.getText();
-					//					for(String key : keyWTweetMap.keySet()){
-					//						if(text.toLowerCase().contains(key.toLowerCase())){
-					//							keyWTweetMap.put(key, keyWTweetMap.get(key)+1);
-					//							System.out.println("Incremented "+key+" to "+keyWTweetMap.get(key));
-					//						}
-					//					}
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
