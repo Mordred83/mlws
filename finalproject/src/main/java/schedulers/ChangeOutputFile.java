@@ -43,9 +43,6 @@ public class ChangeOutputFile {
 			File oldFile = new File(path+yesterday+txtFormat);
 			oldFile.delete();
 			
-		}catch(FileNotFoundException e){
-			System.out.println("Errore nella creazione del file");
-			e.printStackTrace();
 		}catch(IOException ex){
 			System.out.println("Errore nella creazione del file ZIP");
 			ex.printStackTrace();

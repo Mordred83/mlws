@@ -30,7 +30,7 @@ public class EuropeanElections {
 	/**
 	 * Default output file
 	 */
-	public static final File DEF_OUTFILE = new File(DEF_RES_DIR, "tweets_12052014.txt");
+	public static final File DEF_OUTFILE = new File(DEF_RES_DIR, "tweets_13052014.txt");
 	/**
 	 * Default credentials XML file
 	 */
