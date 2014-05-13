@@ -4,7 +4,34 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	   					   http://www.springframework.org/schema/beans/spring-beans.xsd">
 	 
-	 <!-- 
-	<bean id="tweet" class="bean.Tweet" />
-	 -->
+	<!-- JOBS -->
+	 <bean id="changeOutputFile" class="schedulers.ChangeOutputFile" />
+	 <bean id="changeOutputFileJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="changeOutputFile" />
+		<property name="targetMethod" value="changeFile" />
+	</bean>
+	
+	
+	<!-- TRIGGERS -->
+	<bean id="changeOutputFileTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="changeOutputFileJob" />
+		<property name="cronExpression" value="0 50 21 1/1 * ? *" /> 
+		<!-- <property name="cronExpression" value="0 0 3 1/1 * ? *" /> -->
+	</bean>
+	
+	
+	<!-- FACTORY -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="jobDetails">
+			<list>
+				<ref bean="changeOutputFileJob" />
+			</list>
+		</property>
+		<property name="triggers">
+			<list>
+				<ref bean="changeOutputFileTrigger" />
+			</list>
+		</property>
+	</bean> 
+	
 </beans>

@@ -2,6 +2,8 @@ package twitter.auth;
 
 import java.io.File;
 
+import twitter4j.RateLimitStatus;
+import twitter4j.Twitter;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import twitter4j.conf.ConfigurationBuilder;
@@ -27,8 +29,7 @@ public class Authenticate {
 			builderStream.setOAuthConsumerSecret(credentials.getConsumerSecret());
 			builderStream.setJSONStoreEnabled(true);
 
-			TwitterStreamFactory twitterStreamFactory = new TwitterStreamFactory(
-																					builderStream.build());
+			TwitterStreamFactory twitterStreamFactory = new TwitterStreamFactory(builderStream.build());
 
 			//AUTENTICAZIONE
 			twitterStream = twitterStreamFactory.getInstance();

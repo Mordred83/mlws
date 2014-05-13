@@ -26,48 +26,40 @@ public class PoliticalTweets implements Runnable {
 	private final FilterQuery			query;
 	private final String[]				kwArray;
 	private final BlockingQueue<String>	sharedQueue;
-	private File					outFile;
+	private static File					outFile;
 	//private final Map<String, Integer>	keyWTweetMap;
 	private final StatusListener		listener		= new StatusListener() {
 
-															// TweetList tweets = new TweetList(new ArrayList<Tweet>());
+		// TweetList tweets = new TweetList(new ArrayList<Tweet>());
 
-															@Override
-															public void onStatus(Status status) {
-																System.out.println("New tweet with id: "
-																		+ status.getId());
-																String rawJSON = TwitterObjectFactory.getRawJSON(status); 
-																sharedQueue.add(rawJSON);
-																System.out.println("Tweet: "
-																		+ status.getId()
-																		+ " added to Queue");
-															}
+		@Override
+		public void onStatus(Status status) {
+			System.out.println("New tweet with id: " + status.getId());
+			String rawJSON = TwitterObjectFactory.getRawJSON(status); 
+			sharedQueue.add(rawJSON);
+			System.out.println("Tweet: "+ status.getId()+ " added to Queue");
+		}
 
-															@Override
-															public void onException(Exception e) {
-																// TODO: better use of this method
-																e.printStackTrace();
-																System.err.println("Stopping thread due to exception: "
-																		+ e.getClass().getSimpleName());
-															};
+		@Override
+		public void onException(Exception e) {
+		// TODO: better use of this method
+		e.printStackTrace();
+		System.err.println("Stopping thread due to exception: "+ e.getClass().getSimpleName());
+		};
 
-															@Override
-															public void onDeletionNotice(
-																	StatusDeletionNotice arg0) {};
+		@Override
+		public void onDeletionNotice(StatusDeletionNotice arg0) {};
 
-															@Override
-															public void onScrubGeo(long arg0,
-																	long arg1) {};
+		@Override
+		public void onScrubGeo(long arg0,long arg1) {};
 
-															@Override
-															public void onStallWarning(
-																	StallWarning arg0) {};
+		@Override
+		public void onStallWarning(StallWarning arg0) {};
 
-															@Override
-															public void onTrackLimitationNotice(
-																	int arg0) {};
+		@Override
+		public void onTrackLimitationNotice(int arg0) {};
 
-														};
+	};
 
 	public PoliticalTweets(TwitterStream tStream,
 							List<String> kwList,
@@ -111,10 +103,10 @@ public class PoliticalTweets implements Runnable {
 		}
 	}
 	
-	public synchronized void changeOutFile(File newOutFile){
-		System.out.println("Changinh output file to: "+newOutFile.getAbsolutePath());
+	public synchronized static void changeOutFile(File newOutFile){
+		System.out.println("Changing output file to: "+newOutFile.getAbsolutePath());
 		if(newOutFile.exists() && newOutFile.canWrite()){
-			this.outFile = newOutFile;
+			outFile = newOutFile;
 		}else{
 			String msg = newOutFile.getAbsolutePath()+(!newOutFile.exists() ? ": doesn't exists":" not enough permissions");
 			throw new IllegalArgumentException(msg);

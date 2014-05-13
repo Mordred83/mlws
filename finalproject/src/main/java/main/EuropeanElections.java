@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import listener.PoliticalTweets;
 import twitter.auth.Authenticate;
 import twitter4j.TwitterStream;
@@ -28,7 +30,7 @@ public class EuropeanElections {
 	/**
 	 * Default output file
 	 */
-	public static final File DEF_OUTFILE = new File(DEF_RES_DIR, "output.txt");
+	public static final File DEF_OUTFILE = new File(DEF_RES_DIR, "tweets_12052014.txt");
 	/**
 	 * Default credentials XML file
 	 */
@@ -93,6 +95,7 @@ public class EuropeanElections {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		new ClassPathXmlApplicationContext("conf/application-context.xml");
 		EuropeanElections instance = null;
 		File kwFile = null, outFile = null;
 		TwitterStream twitterStream = null;
