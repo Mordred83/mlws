@@ -10,6 +10,8 @@ import java.util.List;
 
 import listener.PoliticalTweets;
 import twitter.auth.Authenticate;
+import twitter4j.RateLimitStatusEvent;
+import twitter4j.RateLimitStatusListener;
 import twitter4j.TwitterStream;
 
 public class EuropeanElections {

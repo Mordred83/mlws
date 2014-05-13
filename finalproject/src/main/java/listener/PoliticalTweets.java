@@ -66,6 +66,7 @@ public class PoliticalTweets implements Runnable {
 															@Override
 															public void onTrackLimitationNotice(
 																	int arg0) {};
+														
 
 														};
 
@@ -112,7 +113,7 @@ public class PoliticalTweets implements Runnable {
 	}
 	
 	public synchronized void changeOutFile(File newOutFile){
-		System.out.println("Changinh output file to: "+newOutFile.getAbsolutePath());
+		System.out.println("Changing output file to: "+newOutFile.getAbsolutePath());
 		if(newOutFile.exists() && newOutFile.canWrite()){
 			this.outFile = newOutFile;
 		}else{
