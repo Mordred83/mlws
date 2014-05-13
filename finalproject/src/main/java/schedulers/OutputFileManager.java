@@ -2,19 +2,14 @@ package schedulers;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import listener.PoliticalTweets;
-import twitter4j.TwitterException;
-import bean.Tweet;
-import bean.TweetList;
 
 public class OutputFileManager {
 
@@ -95,5 +90,4 @@ public class OutputFileManager {
 						+ " not enough permissions");
 		return outputDir;
 	}
-
 }

@@ -16,8 +16,6 @@ public class Authenticate {
 
 		try {
 			ClassLoader cl = getClass().getClassLoader();
-//			for (File f : new File(cl.getResource("conf/fautenticate.xml").getFile()).listFiles())
-//				System.out.println(f.getAbsolutePath());
 			File credentialsXMLFile = new File(
 												cl.getResource(	"conf/fauthenticate.xml").getFile());
 			credentials = TwitterAppCredentialManager.getCredentials(credentialsXMLFile).get(0);
