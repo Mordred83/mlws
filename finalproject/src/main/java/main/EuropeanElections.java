@@ -1,6 +1,6 @@
 package main;
 
-import java.io.BufferedReader;
+import java.io.BufferedReader; 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -8,10 +8,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import listener.PoliticalTweets;
 import twitter.auth.Authenticate;
-import twitter4j.RateLimitStatusEvent;
-import twitter4j.RateLimitStatusListener;
 import twitter4j.TwitterStream;
 
 public class EuropeanElections {
@@ -22,7 +23,7 @@ public class EuropeanElections {
 	/**
 	 * Default configuration files directory
 	 */
-	public static final File DEF_CONF_DIR = new File(DEF_RES_DIR, "conf");
+	public static final File DEF_CONF_DIR = new File(DEF_RES_DIR, "resources/conf");
 	/**
 	 * Default keyword file
 	 */
@@ -95,6 +96,7 @@ public class EuropeanElections {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		ApplicationContext context = new ClassPathXmlApplicationContext("resources/conf/application-context.xml");
 		EuropeanElections instance = null;
 		File kwFile = null, outFile = null;
 		TwitterStream twitterStream = null;

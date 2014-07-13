@@ -6,7 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Final Project</name>
 	<description>It's the final countdown</description>
-	
+
 	<properties>
 		<jdk.version>1.7</jdk.version>
 	</properties>
@@ -69,4 +69,15 @@
 			<version>1.2</version>
 		</dependency>
 	</dependencies>
+	<build>
+		<finalName>Spring Examples</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>src/main/config</directory>
+			</resource>
+		</resources>
+	</build>
 </project>
