@@ -4,15 +4,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import org.python.modules.synchronize;
 
 
 public class HopLimitedCrawlerQueue<T> {
 	
 	private final ArrayList<LinkedBlockingQueue<T>>	queues;
+	private int counter ;
 
 	public HopLimitedCrawlerQueue(int hops) {
+		counter = 0;
 		int listSize = hops+1;
 		queues = new ArrayList<LinkedBlockingQueue<T>>(listSize);
 		for (int i = 0; i < listSize; i++) {
@@ -29,6 +31,7 @@ public class HopLimitedCrawlerQueue<T> {
 		for(int i=0; i<queues.size(); i++){
 			BlockingQueue<T> queue = queues.get(i);
 			if(queue.isEmpty() == false){
+				if(i<getMaxHops()) counter++;
 				return new Result(i, queue.remove());
 			}
 		}
@@ -44,17 +47,20 @@ public class HopLimitedCrawlerQueue<T> {
 	
 	public synchronized boolean addAll(int distance, Collection<? extends T> elements){
 		if(distance < queues.size()){
+			--counter;
 			boolean result = false;
 			BlockingQueue<T> queue = queues.get(distance);
-			for(T element : elements){
-				result = queue.add(element) || result;
-			}
+			queue.addAll(elements);
 			return result;
 		}throw new IllegalArgumentException("Distance: "+distance+" exceeds the hop limit: "+queues.size());
 	}
 	
 	public synchronized int getMaxHops(){
 		return queues.size()-1;
+	}
+	
+	public synchronized boolean asFinished(){
+		return isEmpty() && counter < 1;
 	}
 	
 	public class Result{
@@ -72,5 +78,12 @@ public class HopLimitedCrawlerQueue<T> {
 		public int getHop(){
 			return hop;
 		}
+	}
+
+	public synchronized boolean isEmpty() {
+		for(BlockingQueue<T> queue : queues){
+			if(queue.isEmpty()==false) return false;
+		}
+		return true;
 	}
 }
